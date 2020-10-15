@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, Express } from 'express';
 import { getRepository } from 'typeorm';
-import Orphanages from '../models/Orphanages';
+import Orphanages from '../models/Orphanage';
 
 class OrphanagesController {
   public async index(req: Request, res: Response): Promise<Response> {
@@ -26,6 +26,7 @@ class OrphanagesController {
   }
 
   public async create(req: Request, res: Response): Promise<Response> {
+    console.log(req.files);
     const {
       name,
       latitude,
@@ -38,8 +39,12 @@ class OrphanagesController {
 
     const orphanagesRepository = getRepository(Orphanages);
 
+    const requestImages = req.files as Express.Multer.File[];
+
+    const images = requestImages.map((image) => ({ path: image.filename }));
+
     const orphanage = orphanagesRepository.create({
-      name, latitude, longitude, about, instructions, opening_hours, open_on_weekends,
+      name, latitude, longitude, about, instructions, opening_hours, open_on_weekends, images,
     });
 
     await orphanagesRepository.save(orphanage);
