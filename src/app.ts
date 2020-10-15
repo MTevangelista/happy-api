@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 
 import './database/connection';
 
@@ -18,6 +19,7 @@ class App {
   private middleware(): void {
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
   }
 
   private routes(): void {
