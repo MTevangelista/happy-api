@@ -14,6 +14,7 @@ class App {
 
   public constructor() {
     this.app = express();
+    this.app.use(cors());
 
     this.routes();
     this.middleware();
@@ -21,7 +22,7 @@ class App {
 
   private middleware(): void {
     this.app.use(express.json());
-    this.app.use(cors());
+
     this.app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
     this.app.use(errorHandler);
   }
